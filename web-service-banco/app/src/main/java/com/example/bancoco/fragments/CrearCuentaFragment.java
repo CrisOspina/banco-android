@@ -66,7 +66,7 @@ public class CrearCuentaFragment extends Fragment {
         final String id = cedula.getText().toString();
         final String numero = numeroCuenta.getText().toString();
 
-        String url = "http://192.168.1.74:8089/web-services-banco/registrocuenta.php";
+        String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registrocuenta.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
