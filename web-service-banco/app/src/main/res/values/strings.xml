@@ -1,17 +1,18 @@
 <resources>
-    <string name="app_name">BancoCO</string>
+    <string name="app_name">Bank CO</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_menu">Bank CO</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Salir</string>
+    <string name="action_settings">Logout</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_crear_cuenta">Crear Cuenta</string>
-    <string name="menu_transacciones">Transacciones</string>
+    <string name="menu_home">My account</string>
+    <string name="menu_crear_cuenta">Register account</string>
+    <string name="menu_transacciones">Send transaction</string>
+    <string name="menu_saldo">Add money</string>
 </resources>
