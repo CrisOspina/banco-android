@@ -56,8 +56,6 @@ public class TransaccionesFragment extends Fragment {
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        //int cuentaOrigen = Integer.parseInt(origen.getText().toString());
-
         if(cOrigen.isEmpty() || cDestino.isEmpty() || cValor.isEmpty()){
             Toast.makeText(getContext(), "Campos obligatorios", Toast.LENGTH_SHORT).show();
         } else {
@@ -72,18 +70,18 @@ public class TransaccionesFragment extends Fragment {
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/transacciones.php";
+        String url = "http://192.168.1.74:8089/web-services-banco/transacciones.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Cuenta Registrada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Succesful transaction", Toast.LENGTH_SHORT).show();
                 limpiarCampos();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Fallo el registro, por favor verifica nuevamente" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Transaction failed, please check again" + error, Toast.LENGTH_SHORT).show();
                 Log.d("","error" + error);
             }
         })

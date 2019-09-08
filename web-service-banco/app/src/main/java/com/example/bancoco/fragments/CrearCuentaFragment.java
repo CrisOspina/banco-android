@@ -1,6 +1,7 @@
 package com.example.bancoco.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,7 +23,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.bancoco.Cliente;
+import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,14 +38,17 @@ public class CrearCuentaFragment extends Fragment {
 
     private Button btnCrearCuenta;
     private EditText cedula, numeroCuenta;
+    private TextView identificacion;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_crear_cuenta,container,false);
         cedula = vista.findViewById(R.id.etCedula);
         numeroCuenta = vista.findViewById(R.id.etNumeroCuenta);
+        identificacion = vista.findViewById(R.id.tvIdent);
 
         btnCrearCuenta = vista.findViewById(R.id.btnCrearCuenta);
         btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
@@ -62,22 +73,22 @@ public class CrearCuentaFragment extends Fragment {
         }
     }
 
-    private  void registrarCuenta(){
+    private void registrarCuenta(){
         final String id = cedula.getText().toString();
         final String numero = numeroCuenta.getText().toString();
 
-        String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registrocuenta.php";
+        String url = "http://192.168.1.74:8089/web-services-banco/registrocuenta.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), "Cuenta Registrada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Successful registered account", Toast.LENGTH_SHORT).show();
                 limpiarCampos();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Fallo el registro, por favor verifica nuevamente" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Registration failed, please check again" + error, Toast.LENGTH_SHORT).show();
                 Log.d("","error" + error);
             }
         })
@@ -98,5 +109,4 @@ public class CrearCuentaFragment extends Fragment {
         cedula.setText("");
         numeroCuenta.setText("");
     }
-
 }

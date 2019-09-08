@@ -72,21 +72,19 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 
 	@Override
 	public void onResponse(JSONObject response) {
-		String correo = email.getText().toString();
-		Toast.makeText(getContext(), "Se ha encontrado el usuario con el correo" + correo, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), "successful", Toast.LENGTH_SHORT).show();
 		obtenerDatosDelUsuario(response);
 	}
 
 	@Override
 	public void onErrorResponse(VolleyError error) {
-		String correo = email.getText().toString();
-		Toast.makeText(getContext(), "No se ha encontrado el usuario con el " + correo + " verifica...", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), "User not found, please check again", Toast.LENGTH_SHORT).show();
 	}
 
 	private void iniciarSesion() {
 		String correo = email.getText().toString();
 		String password = clave.getText().toString();
-		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
+		String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
 		jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
 		rq.add(jrq);
 	}
@@ -115,10 +113,9 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 			e.printStackTrace();
 		}
 
-
 		Intent intent = new Intent(getContext(), MenuActivity.class);
-		//intent.putExtra(MostrarDataActivity.nombre, usua.getNombre());
-		//intent.putExtra(MostrarDataActivity.correo, usua.getCorreo());
+		//intent.putExtra(MenuActivity.ident, cliente.getIdent());
+
 		startActivity(intent);
 	}
 }

@@ -60,7 +60,7 @@ public class RegistrarseFragment extends Fragment {
 		final String correo = email.getText().toString();
 
 		if(id.isEmpty() || pass.isEmpty() || names.isEmpty() || correo.isEmpty()){
-			Toast.makeText(getContext(), "Campos obligatorios", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), "All mandatory fields", Toast.LENGTH_SHORT).show();
 		} else {
 			registrarUsuario();
 			limpiarCampos();
@@ -74,18 +74,18 @@ public class RegistrarseFragment extends Fragment {
 		final String names = nombres.getText().toString();
 		final String correo = email.getText().toString();
 
-		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registro.php";
+		String url = "http://192.168.1.74:8089/web-services-banco/registro.php";
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
 			@Override
 			public void onResponse(String response) {
-				Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), "Successful registration", Toast.LENGTH_SHORT).show();
 				limpiarCampos();
 			}
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Toast.makeText(getContext(), "Fallo el registro, por favor verifica nuevamente" + error, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), "Registration failed, please check again" + error, Toast.LENGTH_SHORT).show();
 				Log.d("","error" + error);
 			}
 		})
