@@ -3,14 +3,10 @@ package com.example.bancoco;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.bancoco.fragments.ActualizarSaldoCuentaFragment;
 import com.example.bancoco.fragments.CrearCuentaFragment;
-import com.example.bancoco.fragments.IniciarSesionFragment;
-import com.example.bancoco.fragments.RegistrarseFragment;
+import com.example.bancoco.fragments.DataUsuarioFragment;
 import com.example.bancoco.fragments.TransaccionesFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.View;
 
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +39,7 @@ public class MenuActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -85,24 +83,29 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment miFrament = null;
+        Fragment miFragment = null;
         boolean fragmentSeleccionado = false;
 
         if (id == R.id.nav_home) {
+            Intent intent = new Intent(MenuActivity.this, DataCuentaUserActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_crear_cuenta) {
-            miFrament = new CrearCuentaFragment();
+            miFragment = new CrearCuentaFragment();
             fragmentSeleccionado = true;
 
         } else if (id == R.id.nav_transacciones) {
-            miFrament = new TransaccionesFragment();
+            miFragment = new TransaccionesFragment();
+            fragmentSeleccionado = true;
+
+        } else if (id == R.id.nav_saldo){
+            miFragment = new ActualizarSaldoCuentaFragment();
             fragmentSeleccionado = true;
         }
 
         if(fragmentSeleccionado){
-            getSupportFragmentManager().beginTransaction().replace(R.id.escenario, miFrament).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.escenario, miFragment).commit();
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
