@@ -1,7 +1,7 @@
 <?php
 	if (isset($_REQUEST['ident']) && isset($_REQUEST['email']) && isset($_REQUEST['nombres']) && isset($_REQUEST['clave'])) {
-		$ident    = $_POST['ident'];
-		$email  = $_POST['email'];
+		$ident = $_POST['ident'];
+		$email = $_POST['email'];
 		$nombres = $_POST['nombres'];
 		$clave = $_POST['clave'];
 

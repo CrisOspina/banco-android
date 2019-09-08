@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-09-2019 a las 06:36:28
+-- Tiempo de generación: 08-09-2019 a las 07:06:19
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.2.5
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cliente` (
-  `ident` bigint(12) NOT NULL,
+  `ident` varchar(12) NOT NULL,
   `nombres` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
   `clave` varchar(10) NOT NULL
@@ -40,10 +40,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`ident`, `nombres`, `email`, `clave`) VALUES
-(111, 'cris', 'cris@gmail.com', '123'),
-(222, 'prueba', 'prueba@gmail.com', '123'),
-(666, 'hel', 'hel@gmail.com', '123'),
-(101010, 'Hades', 'hades@gmail.com', '123');
+('123', 'cris', 'cris@gmail.com', '123');
 
 -- --------------------------------------------------------
 
@@ -53,7 +50,7 @@ INSERT INTO `cliente` (`ident`, `nombres`, `email`, `clave`) VALUES
 
 CREATE TABLE `cuenta` (
   `nrocuenta` int(11) NOT NULL,
-  `ident` bigint(12) NOT NULL,
+  `ident` varchar(12) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `saldo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -63,9 +60,7 @@ CREATE TABLE `cuenta` (
 --
 
 INSERT INTO `cuenta` (`nrocuenta`, `ident`, `fecha`, `saldo`) VALUES
-(101, 10101010, '2019-09-02 04:33:10', 0),
-(999, 555, '0000-00-00 00:00:00', 0),
-(3344, 111, '0000-00-00 00:00:00', 20000);
+(666, '123', '2019-09-08 04:56:17', 10000);
 
 -- --------------------------------------------------------
 
@@ -80,20 +75,6 @@ CREATE TABLE `transaccion` (
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `transaccion`
---
-
-INSERT INTO `transaccion` (`nrotransaccion`, `nrocuentaorigen`, `nrocuentadestino`, `fecha`, `valor`) VALUES
-(1, 3344, '999', '0000-00-00 00:00:00', 10000),
-(2, 3344, '999', '0000-00-00 00:00:00', 40000),
-(3, 3344, '999', '0000-00-00 00:00:00', 2000),
-(4, 3344, '999', '0000-00-00 00:00:00', 30000000),
-(5, 3344, '999', '0000-00-00 00:00:00', 4500000),
-(6, 3344, '999', '2019-09-02 03:09:18', 900),
-(7, 3344, '999', '2019-09-02 03:52:42', 10000),
-(8, 3344, '101', '2019-09-02 04:33:55', 10000);
 
 --
 -- Índices para tablas volcadas
@@ -127,11 +108,17 @@ ALTER TABLE `transaccion`
 -- AUTO_INCREMENT de la tabla `transaccion`
 --
 ALTER TABLE `transaccion`
-  MODIFY `nrotransaccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `nrotransaccion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `cuenta`
+--
+ALTER TABLE `cuenta`
+  ADD CONSTRAINT `cuenta_ibfk_1` FOREIGN KEY (`ident`) REFERENCES `cliente` (`ident`);
 
 --
 -- Filtros para la tabla `transaccion`
