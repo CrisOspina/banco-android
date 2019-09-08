@@ -53,7 +53,14 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline">
+
+        <TextView
+            android:id="@+id/tvIdent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -87,7 +94,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Cédula"
+            android:hint="Verify your id"
             android:inputType="textPersonName" />
     </LinearLayout>
 
@@ -110,7 +117,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Número de cuenta"
+            android:hint="Count number"
             android:inputType="textPersonName" />
     </LinearLayout>
 
@@ -146,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Crear cuenta" />
+            android:text="Create account" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

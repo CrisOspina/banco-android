@@ -74,7 +74,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Cuenta origen"
+            android:hint="Number account origin"
             android:inputType="textPersonName" />
     </LinearLayout>
 
@@ -97,7 +97,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Cuenta destino"
+            android:hint="Number account destiny"
             android:inputType="textPersonName" />
     </LinearLayout>
 
@@ -120,7 +120,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Valor"
+            android:hint="Quantity"
             android:inputType="textPersonName" />
     </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Enviar transacción" />
+            android:text="Send" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

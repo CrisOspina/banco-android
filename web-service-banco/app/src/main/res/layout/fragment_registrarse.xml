@@ -62,7 +62,7 @@
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:ems="10"
-			android:hint="Identificación"
+			android:hint="You id"
 			android:inputType="textPersonName" />
 	</LinearLayout>
 
@@ -167,7 +167,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Registrarse" />
+			android:text="Sign Up" />
 	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

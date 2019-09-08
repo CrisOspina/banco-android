@@ -108,7 +108,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Iniciar sesión" />
+			android:text="Log In" />
 	</LinearLayout>
 
 	<androidx.constraintlayout.widget.Guideline
@@ -143,7 +143,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Registrarse" />
+			android:text="Sign Up" />
 	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
