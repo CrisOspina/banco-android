@@ -13,7 +13,7 @@
       $saldoOrigen =  $row->saldo;      
     }
     
-    // Validación del saldo y actualización de la cuenta origen y cuenta destino.
+    // Ingreso permitido para aumentar el saldo de la cuenta.
 		if($saldoActual > 0){
 			$updateSaldo = $saldoOrigen + $saldoActual;
 		} else {
