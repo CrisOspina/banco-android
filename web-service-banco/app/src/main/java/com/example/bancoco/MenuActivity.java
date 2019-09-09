@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.example.bancoco.fragments.ActualizarSaldoCuentaFragment;
 import com.example.bancoco.fragments.CrearCuentaFragment;
-import com.example.bancoco.fragments.DataUsuarioFragment;
 import com.example.bancoco.fragments.TransaccionesFragment;
 
 import androidx.core.view.GravityCompat;
@@ -22,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
-import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
