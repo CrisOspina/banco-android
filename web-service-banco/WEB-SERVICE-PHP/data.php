@@ -1,15 +1,16 @@
 <?php 
- include 'conexion.php';		
+ include 'conexion.php';			
 
-		$registros = $cnx->query("SELECT cliente.ident, cliente.email, cliente.nombres, cuenta.nrocuenta, cuenta.saldo  FROM cliente INNER JOIN cuenta WHERE cliente.ident = cuenta.ident");
-		
-		//En este arreglo se guardará la informacion para pasarla a JSON
-		$json = array();
+	$registros = $cnx->query("SELECT cliente.ident, cliente.email, cliente.nombres, cuenta.nrocuenta, cuenta.saldo  FROM cliente INNER JOIN cuenta WHERE cliente.ident = cuenta.ident");
+	
+	//En este arreglo se guardará la informacion para pasarla a JSON
+	$json = array();
 
-		foreach ($registros as $fila) {
-			$json['datos'][]=$fila;
-		}
-		//pasar los datos del array a JSON con informacion o vacío
-		echo json_encode($json);
+	foreach ($registros as $fila) {
+		$json['datos'][]=$fila;
+	}
+
+	//pasar los datos del array a JSON con informacion o vacío
+	echo json_encode($json);
 	
  ?>
