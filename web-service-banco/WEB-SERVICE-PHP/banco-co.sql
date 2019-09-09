@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-09-2019 a las 07:06:19
+-- Tiempo de generación: 09-09-2019 a las 02:20:49
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.2.5
 
@@ -40,7 +40,8 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`ident`, `nombres`, `email`, `clave`) VALUES
-('123', 'cris', 'cris@gmail.com', '123');
+('123', 'cris', 'cris@gmail.com', '123'),
+('555', 'Odin', 'odin@gmail.com', '123');
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,8 @@ CREATE TABLE `cuenta` (
 --
 
 INSERT INTO `cuenta` (`nrocuenta`, `ident`, `fecha`, `saldo`) VALUES
-(666, '123', '2019-09-08 04:56:17', 10000);
+(666, '123', '2019-09-08 22:06:52', 15000),
+(2020, '555', '2019-09-08 22:06:52', 15000);
 
 -- --------------------------------------------------------
 
@@ -75,6 +77,13 @@ CREATE TABLE `transaccion` (
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `transaccion`
+--
+
+INSERT INTO `transaccion` (`nrotransaccion`, `nrocuentaorigen`, `nrocuentadestino`, `fecha`, `valor`) VALUES
+(1, 2020, '666', '2019-09-08 22:06:52', 5000);
 
 --
 -- Índices para tablas volcadas
@@ -108,7 +117,7 @@ ALTER TABLE `transaccion`
 -- AUTO_INCREMENT de la tabla `transaccion`
 --
 ALTER TABLE `transaccion`
-  MODIFY `nrotransaccion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `nrotransaccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
