@@ -12,6 +12,7 @@
 		foreach ($registros as $fila) {
 			$json['datos'][]=$fila;
 		}
+		
 		//pasar los datos del array a JSON con informacion o vacío
 		echo json_encode($json);
 	} else {
