@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bancoco.Cliente;
+import com.example.bancoco.DataCuentaUserActivity;
 import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
 import com.example.bancoco.RegistroActivity;
@@ -114,8 +115,7 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		}
 
 		Intent intent = new Intent(getContext(), MenuActivity.class);
-		//intent.putExtra(MenuActivity.ident, cliente.getIdent());
-
+		//intent.putExtra(DataCuentaUserActivity.email, cliente.getEmail());
 		startActivity(intent);
 	}
 }
