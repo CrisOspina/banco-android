@@ -53,7 +53,14 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline">
+
+		<TextView
+			android:id="@+id/tvIdentUser"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1" />
+	</LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"

@@ -1,6 +1,7 @@
 package com.example.bancoco.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -19,9 +21,17 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.bancoco.Cliente;
+import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +40,7 @@ public class TransaccionesFragment extends Fragment {
 
     private Button btnTransaccion;
     private EditText origen, destino, valor;
+    private TextView idUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +50,11 @@ public class TransaccionesFragment extends Fragment {
         origen = vista.findViewById(R.id.etOrigen);
         destino = vista.findViewById(R.id.etDestino);
         valor = vista.findViewById(R.id.etValor);
+        idUser = vista.findViewById(R.id.tvIdentUser);
+
+        Cliente cliente = new Cliente();
+        String ids = cliente.getIdent();
+        idUser.setText(ids);
 
         btnTransaccion = vista.findViewById(R.id.btnTransaccion);
 
@@ -51,7 +67,7 @@ public class TransaccionesFragment extends Fragment {
         return vista;
     }
 
-    private void validarIngreso(){
+	private void validarIngreso(){
         final String cOrigen = origen.getText().toString();
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
@@ -70,7 +86,8 @@ public class TransaccionesFragment extends Fragment {
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        String url = "http://192.168.1.74:8089/web-services-banco/transacciones.php";
+        //String url = "http://192.168.1.74:8089/web-services-banco/transacciones.php";
+		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/transacciones.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override

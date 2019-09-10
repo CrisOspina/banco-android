@@ -1,0 +1,18 @@
+<?php 
+ include 'conexion.php';		
+ 
+ $ident=$_REQUEST['ident'];
+
+	$registros = $cnx->query("SELECT cliente.ident, cuenta.nrocuenta FROM cliente INNER JOIN cuenta WHERE cliente.ident = '$ident'");
+	
+	//En este arreglo se guardará la informacion para pasarla a JSON
+	$json = array();
+
+	foreach ($registros as $fila) {
+		$json['datos'][]=$fila;
+	}
+
+	//pasar los datos del array a JSON con informacion o vacío
+	echo json_encode($json);
+	
+ ?>
