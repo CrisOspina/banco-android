@@ -34,7 +34,8 @@ public class DataCuentaUserActivity extends AppCompatActivity {
 
         mQueue = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.1.74:8089/web-services-banco/data.php";
+        //String url = "http://192.168.1.74:8089/web-services-banco/data.php";
+		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/data.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
