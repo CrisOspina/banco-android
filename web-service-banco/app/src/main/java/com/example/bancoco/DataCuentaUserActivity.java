@@ -62,6 +62,5 @@ public class DataCuentaUserActivity extends AppCompatActivity {
         });
 
         mQueue.add(request);
-
     }
 }
