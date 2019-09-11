@@ -1,8 +1,5 @@
 package com.example.bancoco.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,22 +19,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.bancoco.Cliente;
-import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CrearCuentaFragment extends Fragment {
 
+    // Recibir id de user logueado de la actividad MenuActivity.
+    public final static String ident = "ident";
+
     private Button btnCrearCuenta;
     private EditText cedula, numeroCuenta;
-    private TextView identificacion;
+    //private TextView identificacion;
+    //private TextView tvid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +42,8 @@ public class CrearCuentaFragment extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_crear_cuenta,container,false);
         cedula = vista.findViewById(R.id.etCedula);
         numeroCuenta = vista.findViewById(R.id.etNumeroCuenta);
-        identificacion = vista.findViewById(R.id.tvIdent);
+        //identificacion = vista.findViewById(R.id.tvId);
+        //tvid = vista.findViewById(R.id.tvId);
 
         btnCrearCuenta = vista.findViewById(R.id.btnCrearCuenta);
         btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
@@ -60,11 +55,20 @@ public class CrearCuentaFragment extends Fragment {
         return vista;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Bundle args = getArguments();
+        if (args != null) {
+            cedula.setText(args.getString(ident));
+        }
+    }
+
     private void validarIngreso(){
-        final String id = cedula.getText().toString();
+        //final String id = cedula.getText().toString();
         final String numero = numeroCuenta.getText().toString();
 
-        if(id.isEmpty() || numero.isEmpty()){
+        if(numero.isEmpty()){
             Toast.makeText(getContext(), "Campos obligatorios", Toast.LENGTH_SHORT).show();
         } else {
             registrarCuenta();
@@ -77,8 +81,8 @@ public class CrearCuentaFragment extends Fragment {
         final String id = cedula.getText().toString();
         final String numero = numeroCuenta.getText().toString();
 
-        //String url = "http://192.168.1.74:8089/web-services-banco/registrocuenta.php";
-		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registrocuenta.php";
+        String url = "http://192.168.1.74:8089/web-services-banco/registrocuenta.php";
+		//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registrocuenta.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
@@ -107,7 +111,7 @@ public class CrearCuentaFragment extends Fragment {
     }
 
     private void  limpiarCampos(){
-        cedula.setText("");
+        //cedula.setText("");
         numeroCuenta.setText("");
     }
 }
