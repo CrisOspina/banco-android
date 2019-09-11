@@ -1,8 +1,5 @@
 package com.example.bancoco.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,9 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,41 +20,40 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.bancoco.Cliente;
-import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TransaccionesFragment extends Fragment {
 
+    // Recibir id de user logueado de la actividad MenuActivity.
+    public final static String ident = "ident";
+
     private Button btnTransaccion;
-    private EditText origen, destino, valor;
-    private TextView idUser;
+    private EditText id, destino, valor;
+    private RequestQueue mQueue;
+    private Spinner spOrigen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_transacciones,container,false);
-        origen = vista.findViewById(R.id.etOrigen);
+        id = vista.findViewById(R.id.etIdUserLogin);
         destino = vista.findViewById(R.id.etDestino);
         valor = vista.findViewById(R.id.etValor);
-        idUser = vista.findViewById(R.id.tvIdentUser);
-
-        Cliente cliente = new Cliente();
-        String ids = cliente.getIdent();
-        idUser.setText(ids);
-
+        spOrigen = vista.findViewById(R.id.spOrigen);
         btnTransaccion = vista.findViewById(R.id.btnTransaccion);
+
+        mQueue = Volley.newRequestQueue(getContext());
 
         btnTransaccion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +64,61 @@ public class TransaccionesFragment extends Fragment {
         return vista;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Bundle args = getArguments();
+        if (args != null) {
+            id.setText(args.getString(ident));
+        }
+
+        // Spinner con las cuentas asociadas al usuario.
+        cuentasUsuarios();
+    }
+
+
+    private void cuentasUsuarios(){
+        final String ident = id.getText().toString();
+        String url = "http://192.168.1.74:8089/web-services-banco/cuentasUsuarioId.php/?ident="+ident;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<String> cuentasUser = new ArrayList<>();
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        String nrocuenta = data.getString("nrocuenta");
+
+                        // Cuentas asociadas al id del usuario logueado.
+                        cuentasUser.add(nrocuenta);
+
+                        //Se crea adaptador para recorrer cuentas
+                        ArrayAdapter lo_adp_tipos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cuentasUser);
+                        spOrigen.setAdapter(lo_adp_tipos);
+
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+    }
+
 	private void validarIngreso(){
-        final String cOrigen = origen.getText().toString();
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        if(cOrigen.isEmpty() || cDestino.isEmpty() || cValor.isEmpty()){
+        if(cDestino.isEmpty() || cValor.isEmpty()){
             Toast.makeText(getContext(), "Campos obligatorios", Toast.LENGTH_SHORT).show();
         } else {
             registrarTransaccion();
@@ -82,12 +128,12 @@ public class TransaccionesFragment extends Fragment {
     }
 
     private  void registrarTransaccion(){
-        final String cOrigen = origen.getText().toString();
+        final String cOrigen = spOrigen.getSelectedItem().toString();
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        //String url = "http://192.168.1.74:8089/web-services-banco/transacciones.php";
-		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/transacciones.php";
+        String url = "http://192.168.1.74:8089/web-services-banco/transacciones.php";
+		//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/transacciones.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
@@ -117,7 +163,7 @@ public class TransaccionesFragment extends Fragment {
     }
 
     private void  limpiarCampos(){
-        origen.setText("");
+        //origen.setText("");
         destino.setText("");
         valor.setText("");
     }
