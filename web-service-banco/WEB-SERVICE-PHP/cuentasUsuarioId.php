@@ -3,7 +3,11 @@
  
  $ident=$_REQUEST['ident'];
 
-	$registros = $cnx->query("SELECT cliente.ident, cuenta.nrocuenta FROM cliente INNER JOIN cuenta WHERE cliente.ident = '$ident'");
+	$registros = $cnx->query("SELECT cuenta.nrocuenta FROM cuenta WHERE cuenta.ident = '$ident'");
+
+	/* 
+		http://localhost:8089/web-services-banco/cuentasUsuarioId.php/?ident=id
+	*/
 	
 	//En este arreglo se guardará la informacion para pasarla a JSON
 	$json = array();
