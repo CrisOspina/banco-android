@@ -9,103 +9,150 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.bancoco.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MostrarDataUserFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MostrarDataUserFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class MostrarDataUserFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RequestQueue mQueue;
+    private TextView id, emailInfo, nombresInfo, saldo;
+    private Spinner cuentasUsuario;
 
-    private OnFragmentInteractionListener mListener;
-
-    public MostrarDataUserFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MostrarDataUserFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MostrarDataUserFragment newInstance(String param1, String param2) {
-        MostrarDataUserFragment fragment = new MostrarDataUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    // Recibir data de user logueado de la actividad MenuActivity.
+    public final static String ident = "ident";
+    public final static String nombres = "nombres";
+    public final static String email = "email";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mostrar_data_user, container, false);
-    }
+        View vista = inflater.inflate(R.layout.fragment_mostrar_data_user,container,false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+        id = vista.findViewById(R.id.tvIdUsuario);
+        nombresInfo = vista.findViewById(R.id.tvNameInfo);
+        emailInfo = vista.findViewById(R.id.tvEmailInfo);
+        cuentasUsuario = vista.findViewById(R.id.spCuentasEnd);
+        saldo = vista.findViewById(R.id.tvMoneyInfo);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+        mQueue = Volley.newRequestQueue(getContext());
+
+        return vista;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onStart() {
+        super.onStart();
+        Bundle args = getArguments();
+        if (args != null) {
+            id.setText(args.getString(ident));
+            nombresInfo.setText(args.getString(nombres));
+            emailInfo.setText(args.getString(email));
+        }
+
+        // Spinner con las cuentas asociadas al usuario.
+        cuentasUsuarios();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void cuentasUsuarios(){
+        final String ident = id.getText().toString();
+        String url = "http://192.168.1.74:8089/web-services-banco/cuentasUsuarioId.php/?ident="+ident;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<String> cuentasUser = new ArrayList<>();
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        String nrocuenta = data.getString("nrocuenta");
+
+                        // Cuentas asociadas al id del usuario logueado.
+                        cuentasUser.add(nrocuenta);
+
+                        //Se crea adaptador para recorrer cuentas
+                        ArrayAdapter lo_adp_tipos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cuentasUser);
+                        cuentasUsuario.setAdapter(lo_adp_tipos);
+                    }
+
+                    //Identificar cuando es presionado en alguno de los elementos.
+                    cuentasUsuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            //Marca posición sobre que elemento hemos seleccionado.
+                            String lo_tipos = (String) cuentasUsuario.getAdapter().getItem(position);
+
+                            saldoUsuarios();
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+    }
+
+    private void saldoUsuarios(){
+        String cuenta = (String)cuentasUsuario.getSelectedItem();
+        String url = "http://192.168.1.74:8089/web-services-banco/saldoUsuarios.php/?nrocuenta="+cuenta;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        saldo.setText(" ");
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        String saldoCuenta = data.getString("saldo");
+
+                        // Cuentas asociadas al id del usuario logueado.
+                        saldo.append(saldoCuenta);
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+
     }
 }
