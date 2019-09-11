@@ -55,12 +55,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
-		<TextView
-			android:id="@+id/tvIdentUser"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_weight="1" />
-	</LinearLayout>
+        <TextView
+            android:id="@+id/tvId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:text="Your ID"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etIdUserLogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="textPersonName" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -75,14 +89,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-        <EditText
-            android:id="@+id/etOrigen"
+        <TextView
+            android:id="@+id/tvOrigen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="Number account origin"
-            android:inputType="textPersonName" />
+            android:paddingTop="10dp"
+            android:text="My accounts"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spOrigen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
