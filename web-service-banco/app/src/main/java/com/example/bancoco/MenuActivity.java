@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.bancoco.fragments.ActualizarSaldoCuentaFragment;
 import com.example.bancoco.fragments.CrearCuentaFragment;
+import com.example.bancoco.fragments.MostrarDataUserFragment;
 import com.example.bancoco.fragments.TransaccionesFragment;
 
 import androidx.core.view.GravityCompat;
@@ -24,6 +25,11 @@ import android.view.Menu;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    // id de usuario logueado.
+    public static final String ident = "ident";
+    public static final String nombres = "nombres";
+    public static final String emall = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,19 +91,39 @@ public class MenuActivity extends AppCompatActivity
         boolean fragmentSeleccionado = false;
 
         if (id == R.id.nav_home) {
-            Intent intent = new Intent(MenuActivity.this, DataCuentaUserActivity.class);
-            startActivity(intent);
+            miFragment = new MostrarDataUserFragment();
+            Bundle bundle = new Bundle();
+            String idUserLogIn = getIntent().getStringExtra("ident");
+            String nameUserLogin = getIntent().getStringExtra("nombres");
+            String emailUserLogin = getIntent().getStringExtra("email");
+            bundle.putString(MostrarDataUserFragment.ident, idUserLogIn);
+            bundle.putString(MostrarDataUserFragment.nombres, nameUserLogin);
+            bundle.putString(MostrarDataUserFragment.email, emailUserLogin);
+            miFragment.setArguments(bundle);
+            fragmentSeleccionado = true;
 
         } else if (id == R.id.nav_crear_cuenta) {
             miFragment = new CrearCuentaFragment();
+            Bundle bundle = new Bundle();
+            String idUserLogIn = getIntent().getStringExtra("ident");
+            bundle.putString(CrearCuentaFragment.ident, idUserLogIn);
+            miFragment.setArguments(bundle);
             fragmentSeleccionado = true;
 
         } else if (id == R.id.nav_transacciones) {
             miFragment = new TransaccionesFragment();
+            Bundle bundle = new Bundle();
+            String idUserLogIn = getIntent().getStringExtra("ident");
+            bundle.putString(TransaccionesFragment.ident, idUserLogIn);
+            miFragment.setArguments(bundle);
             fragmentSeleccionado = true;
 
         } else if (id == R.id.nav_saldo){
             miFragment = new ActualizarSaldoCuentaFragment();
+            Bundle bundle = new Bundle();
+            String idUserLogIn = getIntent().getStringExtra("ident");
+            bundle.putString(ActualizarSaldoCuentaFragment.ident, idUserLogIn);
+            miFragment.setArguments(bundle);
             fragmentSeleccionado = true;
         }
 
