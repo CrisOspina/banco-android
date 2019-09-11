@@ -19,8 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.bancoco.Cliente;
-import com.example.bancoco.DataCuentaUserActivity;
+import com.example.bancoco.models.Cliente;
 import com.example.bancoco.MenuActivity;
 import com.example.bancoco.R;
 import com.example.bancoco.RegistroActivity;
@@ -55,7 +54,6 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 			@Override
 			public void onClick(View v) {
 				iniciarSesion();
-				limpiarCampos();
 			}
 		});
 
@@ -70,30 +68,14 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		return vista;
 	}
 
-
-	@Override
-	public void onResponse(JSONObject response) {
-		Toast.makeText(getContext(), "successful", Toast.LENGTH_SHORT).show();
-		obtenerDatosDelUsuario(response);
-	}
-
-	@Override
-	public void onErrorResponse(VolleyError error) {
-		Toast.makeText(getContext(), "User not found, please check again", Toast.LENGTH_SHORT).show();
-	}
-
 	private void iniciarSesion() {
 		String correo = email.getText().toString();
 		String password = clave.getText().toString();
-		//String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
-		String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
+
+		String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
+		//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
 		jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
 		rq.add(jrq);
-	}
-
-	private void  limpiarCampos(){
-		email.setText("");
-		clave.setText("");
 	}
 
 	private  void obtenerDatosDelUsuario(JSONObject response){
@@ -116,7 +98,20 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		}
 
 		Intent intent = new Intent(getContext(), MenuActivity.class);
-		//intent.putExtra(MenuActivity.ident, cliente.getIdent());
+		intent.putExtra(MenuActivity.ident, cliente.getIdent());
+		intent.putExtra(MenuActivity.nombres, cliente.getNombres());
+		intent.putExtra(MenuActivity.emall, cliente.getEmail());
 		startActivity(intent);
+	}
+
+	@Override
+	public void onResponse(JSONObject response) {
+		Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
+		obtenerDatosDelUsuario(response);
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		Toast.makeText(getContext(), "User not found, please check again", Toast.LENGTH_SHORT).show();
 	}
 }
