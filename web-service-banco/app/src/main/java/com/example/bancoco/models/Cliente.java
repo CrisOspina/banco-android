@@ -1,4 +1,4 @@
-package com.example.bancoco;
+package com.example.bancoco.models;
 
 public class Cliente {
 	String ident, nombres, email, clave;
