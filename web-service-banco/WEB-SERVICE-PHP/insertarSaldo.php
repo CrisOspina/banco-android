@@ -3,6 +3,10 @@
 		$saldoActual = $_POST['saldo'];
 		$nrocuenta = $_POST['nrocuenta'];
 
+		/*
+			http://localhost:8089/web-services-banco/insertarSaldo.php/
+		*/
+
 		$cnx =  mysqli_connect("localhost","root","","banco-co") or die("Ha sucedido un error inexperado en la conexion de la base de datos");
 
     $result = mysqli_query($cnx,"select saldo from cuenta where nrocuenta = '$nrocuenta'");				
