@@ -30,10 +30,11 @@ import org.json.JSONObject;
 
 public class IniciarSesionFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
 
+	// Componentes del layout
 	private Button iniciar, registrar;
 	private EditText email, clave;
 
-	//objetos para la conexión.
+	// Objetos para la conexión.
 	private RequestQueue rq;
 	private JsonRequest jrq;
 
@@ -50,6 +51,7 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		//Requerimiento Volley
 		rq = Volley.newRequestQueue(getContext());
 
+		// Botón -> Iniciar sesión
 		iniciar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -57,6 +59,7 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 			}
 		});
 
+		// Botón -> Registrar usuario
 		registrar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -68,16 +71,35 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		return vista;
 	}
 
+	// -- Métodos secundarios --
+
+	// Validación de password e inicio de sesión
 	private void iniciarSesion() {
 		String correo = email.getText().toString();
 		String password = clave.getText().toString();
 
-		String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
-		//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
-		jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
-		rq.add(jrq);
+		if(correo.isEmpty()){
+			validarEmail();
+		} else if(password.isEmpty()){
+			Toast.makeText(getContext(), "Empty password", Toast.LENGTH_SHORT).show();
+		} else {
+			String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
+			//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
+			jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+			rq.add(jrq);
+		}
 	}
 
+	// Validación del formato email
+	private void validarEmail() {
+		String correo = email.getText().toString();
+		String url = "http://192.168.1.74:8089/web-services-banco/validarEmail.php?email="+correo;
+		jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
+
+		Toast.makeText(getContext(), "Verify email", Toast.LENGTH_SHORT).show();
+	}
+
+	// Obtener info del usuario logueado
 	private  void obtenerDatosDelUsuario(JSONObject response){
 		//Se utiliza la clase usuario para tomar los campos del arreglo datos del archivo php
 		Cliente cliente = new Cliente();
@@ -97,6 +119,7 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 			e.printStackTrace();
 		}
 
+		// Pasar info del usuario logueado a la activity MenuActivity
 		Intent intent = new Intent(getContext(), MenuActivity.class);
 		intent.putExtra(MenuActivity.ident, cliente.getIdent());
 		intent.putExtra(MenuActivity.nombres, cliente.getNombres());
@@ -104,12 +127,14 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		startActivity(intent);
 	}
 
+	// En caso de verificar email y password, se da confirmación al usuario
 	@Override
 	public void onResponse(JSONObject response) {
 		Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
 		obtenerDatosDelUsuario(response);
 	}
 
+	// En caso de no encontrar usuario asociado, se confirmara inconsistencia
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		Toast.makeText(getContext(), "User not found, please check again", Toast.LENGTH_SHORT).show();
