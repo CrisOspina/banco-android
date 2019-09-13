@@ -32,6 +32,8 @@ import java.util.ArrayList;
 public class MostrarDataUserFragment extends Fragment {
 
     private RequestQueue mQueue;
+
+    // Componentes del layout
     private TextView id, emailInfo, nombresInfo, saldo;
     private Spinner cuentasUsuario;
 
@@ -57,6 +59,7 @@ public class MostrarDataUserFragment extends Fragment {
         return vista;
     }
 
+    // Al inflar el fragment se ejecutara primero
     @Override
     public void onStart() {
         super.onStart();
@@ -71,6 +74,9 @@ public class MostrarDataUserFragment extends Fragment {
         cuentasUsuarios();
     }
 
+    // -- Métodos secundarios
+
+    // Data de las cuentas del usuario logueado
     private void cuentasUsuarios(){
         final String ident = id.getText().toString();
         String url = "http://192.168.1.74:8089/web-services-banco/cuentasUsuarioId.php/?ident="+ident;
@@ -94,11 +100,11 @@ public class MostrarDataUserFragment extends Fragment {
                         cuentasUsuario.setAdapter(lo_adp_tipos);
                     }
 
-                    //Identificar cuando es presionado en alguno de los elementos.
+                    // Identificar cuando es presionado en alguno de los elementos.
                     cuentasUsuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            //Marca posición sobre que elemento hemos seleccionado.
+                            // Marca posición sobre que elemento hemos seleccionado.
                             String lo_tipos = (String) cuentasUsuario.getAdapter().getItem(position);
 
                             saldoUsuarios();
@@ -123,6 +129,7 @@ public class MostrarDataUserFragment extends Fragment {
         mQueue.add(request);
     }
 
+    // Data de los saldos de las cuentas del usuario logueado
     private void saldoUsuarios(){
         String cuenta = (String)cuentasUsuario.getSelectedItem();
         String url = "http://192.168.1.74:8089/web-services-banco/saldoUsuarios.php/?nrocuenta="+cuenta;
