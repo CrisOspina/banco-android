@@ -129,7 +129,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Count number"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
