@@ -96,15 +96,16 @@ public class CrearCuentaFragment extends Fragment {
                             JSONObject data = jsonArray.getJSONObject(i);
                             final String nroCuentaBD = data.getString("nrocuenta");
 
-                            if (numero.equals(nroCuentaBD)) {
+                            if (!numero.equals(nroCuentaBD)) {
+                                registrarCuenta();
+                                return;
+                            } else {
                                 Toast.makeText(getContext(), "Account already exists, verify", Toast.LENGTH_SHORT).show();
                                 limpiarCampos();
                                 return;
-                            } else {
-                                registrarCuenta();
-                                limpiarCampos();
                             }
                         }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
