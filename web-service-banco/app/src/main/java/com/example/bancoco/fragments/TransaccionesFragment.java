@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,10 +39,12 @@ public class TransaccionesFragment extends Fragment {
     // Recibir id de user logueado de la actividad MenuActivity.
     public final static String ident = "ident";
 
+    // Componentes del layout
     private Button btnTransaccion;
     private EditText id, destino, valor;
     private RequestQueue mQueue;
     private Spinner spOrigen;
+    private TextView tvMoney;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +55,7 @@ public class TransaccionesFragment extends Fragment {
         destino = vista.findViewById(R.id.etDestino);
         valor = vista.findViewById(R.id.etValor);
         spOrigen = vista.findViewById(R.id.spOrigen);
+        tvMoney = vista.findViewById(R.id.tvMoneyTransacciones);
         btnTransaccion = vista.findViewById(R.id.btnTransaccion);
 
         mQueue = Volley.newRequestQueue(getContext());
@@ -58,7 +63,7 @@ public class TransaccionesFragment extends Fragment {
         btnTransaccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validarIngreso();
+                validarIngresoCuenta();
             }
         });
         return vista;
@@ -76,7 +81,9 @@ public class TransaccionesFragment extends Fragment {
         cuentasUsuarios();
     }
 
+    // -- Métodos secundarios
 
+    // Obtener en un spinner las cuentas de usuario
     private void cuentasUsuarios(){
         final String ident = id.getText().toString();
         String url = "http://192.168.1.74:8089/web-services-banco/cuentasUsuarioId.php/?ident="+ident;
@@ -98,8 +105,23 @@ public class TransaccionesFragment extends Fragment {
                         //Se crea adaptador para recorrer cuentas
                         ArrayAdapter lo_adp_tipos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cuentasUser);
                         spOrigen.setAdapter(lo_adp_tipos);
-
                     }
+
+                    // Identificar cuando es presionado en alguno de los elementos.
+                    spOrigen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            // Marca posición sobre que elemento hemos seleccionado.
+                            String lo_tipos = (String) spOrigen.getAdapter().getItem(position);
+
+                            // Saldo de cuentas del usuario logueado
+                            saldoUsuarios();
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -114,19 +136,93 @@ public class TransaccionesFragment extends Fragment {
         mQueue.add(request);
     }
 
-	private void validarIngreso(){
+    // Validar el ingreso de cuenta
+	private void validarIngresoCuenta(){
         final String cDestino = destino.getText().toString();
         final String cValor = valor.getText().toString();
 
-        if(cDestino.isEmpty() || cValor.isEmpty()){
-            Toast.makeText(getContext(), "Campos obligatorios", Toast.LENGTH_SHORT).show();
-        } else {
-            registrarTransaccion();
-            limpiarCampos();
-            //navegarIniciarSesion();
-        }
+        String url = "http://192.168.1.74:8089/web-services-banco/validarNuevaCuenta.php/";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            ArrayList<String> cuentasUser = new ArrayList<>();
+            @Override
+            public void onResponse(JSONObject response) {
+
+                if(cDestino.isEmpty() || cValor.isEmpty()){
+                    Toast.makeText(getContext(), "Obligatory", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("datos");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject data = jsonArray.getJSONObject(i);
+                            String nroCuentaBD = data.getString("nrocuenta");
+
+                            //cuentasUser.add(nroCuentaBD);
+
+                            if (cDestino.equals(nroCuentaBD)) {
+                                validarSaldoDeCuenta();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
     }
 
+    // Validar el saldo
+    private void validarSaldoDeCuenta(){
+        final String cOrigen = spOrigen.getSelectedItem().toString();
+        final String cValor = valor.getText().toString();
+
+        String url = "http://192.168.1.74:8089/web-services-banco/validarSaldo.php/?nrocuenta="+cOrigen;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            ArrayList<String> cuentasUser = new ArrayList<>();
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        final String saldoBD = data.getString("saldo");
+
+                        int valorIngresado = Integer.parseInt(cValor);
+                        int valorDB = Integer.parseInt(saldoBD);
+
+                        if(valorIngresado < valorDB){
+                            registrarTransaccion();
+                            return;
+                        } else {
+                            Toast.makeText(getContext(), "Insufficient account balance", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+    }
+
+    // Relizar transacción entre cuentas existentes
     private  void registrarTransaccion(){
         final String cOrigen = spOrigen.getSelectedItem().toString();
         final String cDestino = destino.getText().toString();
@@ -162,8 +258,41 @@ public class TransaccionesFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
+    // Impresión de saldo de las cuentas del usuario logueado
+    private void saldoUsuarios(){
+        String cuenta = (String)spOrigen.getSelectedItem();
+        String url = "http://192.168.1.74:8089/web-services-banco/saldoUsuarios.php/?nrocuenta="+cuenta;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        tvMoney.setText(" ");
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        String saldoCuenta = data.getString("saldo");
+
+                        // Cuentas asociadas al id del usuario.
+                        tvMoney.append(saldoCuenta);
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+
+    }
+
     private void  limpiarCampos(){
-        //origen.setText("");
         destino.setText("");
         valor.setText("");
     }
