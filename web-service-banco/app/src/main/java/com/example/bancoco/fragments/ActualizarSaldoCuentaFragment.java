@@ -40,11 +40,11 @@ public class ActualizarSaldoCuentaFragment extends Fragment {
     // Recibir id de user logueado de la actividad MenuActivity.
     public final static String ident = "ident";
 
+    // Componentes del layout
     private Button btnNuevoSaldo;
     private EditText id, saldoNuevo;
     private RequestQueue mQueue;
     private Spinner spCuenta;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +79,8 @@ public class ActualizarSaldoCuentaFragment extends Fragment {
         // Spinner con las cuentas asociadas al usuario.
         cuentasUsuarios();
     }
+
+    // -- Métodos secundarios
 
     private void cuentasUsuarios(){
         final String ident = id.getText().toString();
@@ -125,7 +127,6 @@ public class ActualizarSaldoCuentaFragment extends Fragment {
         } else {
             addMoney();
             limpiarCampos();
-            //navegarIniciarSesion();
         }
     }
 
