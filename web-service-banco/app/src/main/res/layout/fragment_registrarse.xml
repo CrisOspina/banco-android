@@ -7,7 +7,6 @@
 	android:layout_height="match_parent"
 	tools:context=".fragments.RegistrarseFragment">
 
-
 	<androidx.constraintlayout.widget.Guideline
 		android:id="@+id/guideline"
 		android:layout_width="wrap_content"
@@ -56,14 +55,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline">
 
-		<EditText
-			android:id="@+id/etIdent"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etIdents"
 			android:layout_width="match_parent"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:ems="10"
 			android:hint="You id"
-			android:inputType="number" />
+			android:inputType="number" >
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etIdent"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<LinearLayout
@@ -79,14 +85,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-		<EditText
-			android:id="@+id/etNombres"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etNombress"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:ems="10"
 			android:hint="Names"
-			android:inputType="textPersonName" />
+			android:inputType="textPersonName" >
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etNombres"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<LinearLayout
@@ -102,14 +115,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline3">
 
-		<EditText
-			android:id="@+id/etEmail"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etEmails"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:ems="10"
 			android:hint="Email"
-			android:inputType="textPersonName" />
+			android:inputType="textPersonName" >
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etEmail"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="text"/>
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<LinearLayout
@@ -125,14 +145,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline4">
 
-		<EditText
-			android:id="@+id/etClave"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etClaves"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:ems="10"
 			android:hint="Password"
-			android:inputType="textPassword" />
+			android:inputType="textPassword" >
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etClave"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="textPassword"/>
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<androidx.constraintlayout.widget.Guideline
@@ -162,12 +189,15 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline5">
 
-		<Button
+		<com.google.android.material.button.MaterialButton
 			android:id="@+id/btnRegistrarse"
+			style="@style/Widget.Shrine.Button.TextButton"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Sign Up" />
+			android:text="Sign Up"
+			android:textSize="24sp"
+			android:textStyle="bold"/>
 	</LinearLayout>
 
 	<LinearLayout
