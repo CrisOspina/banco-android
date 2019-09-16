@@ -1,9 +1,9 @@
 <?php 
  include 'conexion.php';
-	if (isset($_REQUEST['email']) && isset($_REQUEST['clave'])) {
+	if (isset($_REQUEST['email'])) {
 		$email=$_REQUEST['email'];
 	
-    $registros = $cnx->query("select email, clave from cliente where email = '$email'");
+    $registros = $cnx->query("select email from cliente where email = '$email'");
     
     // Validar si la consulta si contiene data
 		if($registros->num_rows){
@@ -23,6 +23,6 @@
     }
   }
   else {
-		echo "El usuario y la clave son obligatorios";
+		echo "Email requerido";
 	}
  ?>
