@@ -30,4 +30,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //library para las conexiones http.
     implementation 'com.android.volley:volley:1.1.1'
+    api 'com.google.android.material:material:1.1.0-alpha10'
 }
