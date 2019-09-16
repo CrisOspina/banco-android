@@ -56,14 +56,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline2">
 
-		<EditText
-			android:id="@+id/etEmailLogin"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etEmailLogins"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_weight="1"
-			android:ems="10"
+			android:layout_margin="4dp"
 			android:hint="Email"
-			android:inputType="textPersonName" />
+			app:errorEnabled="true">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etEmailLogin"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<LinearLayout
@@ -79,14 +86,21 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline3">
 
-		<EditText
-			android:id="@+id/etClave"
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/etClaves"
+			style="@style/Widget.Shrine.TextInputLayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_weight="1"
-			android:ems="10"
+			android:layout_margin="4dp"
 			android:hint="Password"
-			android:inputType="textPassword" />
+			app:errorEnabled="true">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etClave"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:inputType="textPassword"/>
+		</com.google.android.material.textfield.TextInputLayout>
 	</LinearLayout>
 
 	<LinearLayout
@@ -103,12 +117,16 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/guideline4">
 
-		<Button
+		<com.google.android.material.button.MaterialButton
 			android:id="@+id/btnIniciarSesion"
+			style="@style/Widget.Shrine.Button.TextButton"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Log In" />
+			android:text="Log In"
+			android:textSize="24sp"
+			android:textStyle="bold"
+			/>
 	</LinearLayout>
 
 	<androidx.constraintlayout.widget.Guideline
@@ -138,12 +156,17 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-		<Button
+		<com.google.android.material.button.MaterialButton
 			android:id="@+id/btnRegistrarse"
+			style="@style/Widget.Shrine.Button"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			android:text="Sign Up" />
+			android:text="Sign Up"
+			android:textSize="24sp"
+			android:textStyle="bold"
+			/>
 	</LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
