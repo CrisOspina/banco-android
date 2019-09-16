@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -20,18 +21,28 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bancoco.MainActivity;
 import com.example.bancoco.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrarseFragment extends Fragment {
 
+	// Componentes del layout
 	private EditText ident, email, nombres, clave;
 	private Button registrar;
+	private TextView success;
+
+	private RequestQueue mQueue;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +53,10 @@ public class RegistrarseFragment extends Fragment {
 		clave = vista.findViewById(R.id.etClave);
 		nombres = vista.findViewById(R.id.etNombres);
 		email = vista.findViewById(R.id.etEmail);
+		success = vista.findViewById(R.id.tvSuccess);
 		registrar = vista.findViewById(R.id.btnRegistrarse);
+
+		mQueue = Volley.newRequestQueue(getContext());
 
 		registrar.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -53,22 +67,103 @@ public class RegistrarseFragment extends Fragment {
 		return vista;
 	}
 
+	// -- Métodos secundarios
+
 	private void validarIngreso(){
-		final String id = ident.getText().toString();
 		final String pass = clave.getText().toString();
 		final String names = nombres.getText().toString();
 		final String correo = email.getText().toString();
+		final String id = ident.getText().toString();
 
-		if(id.isEmpty() || pass.isEmpty() || names.isEmpty() || correo.isEmpty()){
+		if(pass.isEmpty() || names.isEmpty() || correo.isEmpty() || id.isEmpty()){
 			Toast.makeText(getContext(), "All mandatory fields", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		if(!correo.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+			email.setError("Invalid email address");
+			//Toast.makeText(getContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
 		} else {
-			registrarUsuario();
-			limpiarCampos();
-			navegarIniciarSesion();
+			validarIdentificacion();
 		}
 	}
 
-	private  void registrarUsuario(){
+	// Validación del formato email y si ya existe en la bd
+	private void validarEmail() {
+		final String correo = email.getText().toString();
+
+		String url = "http://192.168.1.74:8089/web-services-banco/validarEmailRegistro.php/";
+		final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+			@Override
+			public void onResponse(JSONObject response) {
+				try {
+					JSONArray jsonArray = response.getJSONArray("datos");
+
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject data = jsonArray.getJSONObject(i);
+						String emailDB = data.getString("email");
+
+						if (correo.equals(emailDB)) {
+							email.setError("EMAIL already exists");
+							break;
+						} else {
+							registrarUsuario();
+							navegarIniciarSesion();
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
+			}
+		});
+
+		mQueue.add(request);
+	}
+
+	// Validar identificación
+	private void validarIdentificacion(){
+		final String id = ident.getText().toString();
+
+		String url = "http://192.168.1.74:8089/web-services-banco/validarIdentificacion.php/";
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+			@Override
+			public void onResponse(JSONObject response) {
+				try {
+					JSONArray jsonArray = response.getJSONArray("datos");
+
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject data = jsonArray.getJSONObject(i);
+						String identBD = data.getString("ident");
+
+						if(id.equals(identBD)) {
+							ident.setError("ID already exists");
+							//Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+							return;
+						} else {
+							validarEmail();
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
+			}
+		});
+
+		mQueue.add(request);
+	}
+
+	private void registrarUsuario(){
 		final String id = ident.getText().toString();
 		final String pass  = clave.getText().toString();
 		final String names = nombres.getText().toString();
@@ -80,8 +175,8 @@ public class RegistrarseFragment extends Fragment {
 
 			@Override
 			public void onResponse(String response) {
-				Toast.makeText(getContext(), "Successful registration", Toast.LENGTH_SHORT).show();
-				limpiarCampos();
+				//success.setText("Successful");
+				//Toast.makeText(getContext(), "Successful", Toast.LENGTH_SHORT).show();
 			}
 		}, new Response.ErrorListener() {
 			@Override
