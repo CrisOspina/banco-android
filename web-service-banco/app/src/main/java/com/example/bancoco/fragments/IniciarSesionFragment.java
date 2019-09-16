@@ -81,9 +81,10 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 		if(correo.isEmpty()){
 			validarEmail();
 		} else if(password.isEmpty()){
-			Toast.makeText(getContext(), "Empty password", Toast.LENGTH_SHORT).show();
+			clave.setError("Empty password");
+			//Toast.makeText(getContext(), "Empty password", Toast.LENGTH_SHORT).show();
 		} else {
-			String url = "http://192.168.1.74:8089/web-services-banco/sesion.php?email="+correo+"&clave="+password;
+			String url = "http://192.168.1.74:8089/web-services-banco/sesion.php/?email="+correo+"&clave="+password;
 			//String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/sesion.php?email="+correo+"&clave="+password;
 			jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
 			rq.add(jrq);
@@ -93,7 +94,7 @@ public class IniciarSesionFragment extends Fragment implements Response.Listener
 	// Validación del formato email
 	private void validarEmail() {
 		String correo = email.getText().toString();
-		String url = "http://192.168.1.74:8089/web-services-banco/validarEmail.php?email="+correo;
+		String url = "http://192.168.1.74:8089/web-services-banco/validarEmail.php/?email="+correo;
 		jrq = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
 
 		Toast.makeText(getContext(), "Verify email", Toast.LENGTH_SHORT).show();
