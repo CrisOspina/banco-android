@@ -60,21 +60,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
+            android:paddingTop="15dp"
             android:text="ID"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvIdUsuario"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvIdUsuarios"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textStyle="italic" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvIdUsuario"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -95,21 +105,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
+            android:paddingTop="15dp"
             android:text="Names"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvNameInfo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvNameInfos"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textStyle="italic" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvNameInfo"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -130,21 +149,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
+            android:paddingTop="15dp"
             android:text="Email"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvEmailInfo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvEmailInfos"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textStyle="italic" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvEmailInfo"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -173,6 +201,8 @@
 
         <Spinner
             android:id="@+id/spCuentasEnd"
+            style="@style/Widget.Shrine.TextInputLayout"
+            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -217,15 +247,24 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvMoneyInfo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvMoneyInfos"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textStyle="italic" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvMoneyInfo"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
