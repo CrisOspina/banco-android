@@ -68,6 +68,8 @@
 
         <Spinner
             android:id="@+id/spCuenta"
+            style="@style/Widget.Shrine.TextInputLayout"
+            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -101,14 +103,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5">
 
-        <EditText
-            android:id="@+id/etValorNuevo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etValorNuevos"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Value to add account"
-            android:inputType="textPersonName" />
+            android:inputType="number" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etValorNuevo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -156,14 +165,24 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etNumeroCuenta"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etNumeroCuentas"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:enabled="false"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNumeroCuenta"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
