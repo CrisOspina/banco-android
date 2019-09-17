@@ -66,16 +66,25 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etIdUserLogin"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etIdUserLogins"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:enabled="false"
             android:inputType="textPersonName"
-            android:paddingTop="10dp"
-            android:textAlignment="center" />
+            android:textAlignment="center" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etIdUserLogin"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -104,6 +113,8 @@
 
         <Spinner
             android:id="@+id/spOrigen"
+            style="@style/Widget.Shrine.TextInputLayout"
+            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -156,14 +167,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4">
 
-        <EditText
-            android:id="@+id/etDestino"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etDestinos"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Number account destiny"
-            android:inputType="number" />
+            android:inputType="number" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDestino"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -193,14 +211,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5">
 
-        <EditText
-            android:id="@+id/etValor"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etValors"
+            style="@style/Widget.Shrine.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Amount of money"
-            android:inputType="number" />
+            android:inputType="number" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etValor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
