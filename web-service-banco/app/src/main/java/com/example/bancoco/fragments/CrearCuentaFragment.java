@@ -80,35 +80,32 @@ public class CrearCuentaFragment extends Fragment {
     // Verificación con la BD para saber si existe la cuenta
     private void validarIngreso(){
         final String numero = numeroCuenta.getText().toString();
+        if(numero.isEmpty()){
+            Toast.makeText(getContext(), "Obligatory", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String url = "http://192.168.1.74:8089/web-services-banco/validarNuevaCuenta.php/";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("datos");
 
-                if(numero.isEmpty()){
-                    Toast.makeText(getContext(), "Obligatory", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("datos");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject data = jsonArray.getJSONObject(i);
+                        final String nroCuentaBD = data.getString("nrocuenta");
 
-                        for (int i = 0; i <= jsonArray.length(); i++) {
-                            JSONObject data = jsonArray.getJSONObject(i);
-                            final String nroCuentaBD = data.getString("nrocuenta");
-
-                            if (!numero.equals(nroCuentaBD)) {
-                                registrarCuenta();
-                                return;
-                            } else {
-                                Toast.makeText(getContext(), "Account already exists, verify", Toast.LENGTH_SHORT).show();
-                                limpiarCampos();
-                                return;
-                            }
+                        if(numero.equals(nroCuentaBD)){
+                            numeroCuenta.setError("Account already exists, verify");
+                            break;
+                        } else {
+                            registrarCuenta();
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -128,7 +125,7 @@ public class CrearCuentaFragment extends Fragment {
         final String numero = numeroCuenta.getText().toString();
 
         String url = "http://192.168.1.74:8089/web-services-banco/registrocuenta.php";
-        //String url = "http://172.16.22.6:8082/banco-php-android/web-service-banco/WEB-SERVICE-PHP/registrocuenta.php";
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
